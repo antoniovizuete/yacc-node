@@ -1,6 +1,6 @@
-import { YacClientURLOptions } from "../types";
+import { InternalQueryParams } from "../../YacClient/tools/tools.types";
+import { YacClientURLOptions, YacQueryParamsAllowedTypes } from "../../YacClient/types";
 import { optionsToUrl } from "./options-to-url";
-import { InternalQueryParams } from "./tools.types";
 
 type Params = YacClientURLOptions & {
   path?: string;
@@ -11,13 +11,18 @@ const setURLSearchParams = (url: URL, queryParamsMap?: InternalQueryParams): voi
   if (!queryParamsMap) {
     return;
   }
+  const getValue = (value: YacQueryParamsAllowedTypes) => {
+    if (Array.isArray(value)) {
+      return [
+        "[",
+        value.map(item => (typeof item === "string" ? `'${item}'` : item)).join(","),
+        "]",
+      ].join("");
+    }
+    return value.toString();
+  };
   const queryParams = Object.fromEntries(
-    [...queryParamsMap.entries()].flatMap(([key, value]) => {
-      if (Array.isArray(value)) {
-        return value.map(item => [key, item.toString()]);
-      }
-      return [[key, value.toString()]];
-    })
+    [...queryParamsMap.entries()].map(([key, value]) => [key, getValue(value)])
   );
 
   [...new URLSearchParams(queryParams).entries()].forEach(([key, value]) =>

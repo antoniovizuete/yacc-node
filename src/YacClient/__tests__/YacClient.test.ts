@@ -1,4 +1,5 @@
-import { YacInvalidQueryFormat } from "../errors/YacInvalidQueryFormat";
+import { YacInvalidQueryFormat } from "../../errors/YacInvalidQueryFormat";
+import { YacQuerySyntaxError } from "../../errors/YacQuerySyntaxError";
 import { YacClient } from "../YacClient";
 
 describe("YacClient", () => {
@@ -27,5 +28,9 @@ describe("YacClient", () => {
     await expect(() =>
       client.query<{ a: number }>(`SELECT * FROM generateRandom('a UInt8') LIMIT 1 FORMAT TSV`)
     ).rejects.toThrow(new YacInvalidQueryFormat());
+  });
+
+  it("should throw an error if the query is empty", async () => {
+    await expect(() => client.query("Sel * ")).rejects.toThrow(new YacQuerySyntaxError());
   });
 });

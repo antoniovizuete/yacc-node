@@ -1,6 +1,6 @@
 import { YacInvalidOptionsError } from "../../errors/YacInvalidOptionsError";
-import { optionsToUrl } from "../../tools/options-to-url";
-import { YacClientOptions } from "../../types";
+import { YacClientOptions } from "../../YacClient/types";
+import { optionsToUrl } from "../tools/options-to-url";
 
 describe("optionsToUrl", () => {
   it("should throw error if protocol or host or password are not vaild", () => {
@@ -11,9 +11,9 @@ describe("optionsToUrl", () => {
     expect(
       optionsToUrl({
         protocol: "http",
-        host: "localhost",
+        host: "host",
         port: 8123,
       }).toString()
-    ).toEqual("http://localhost:8123/");
+    ).toEqual("http://host:8123/");
   });
 });

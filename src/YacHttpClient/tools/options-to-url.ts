@@ -1,5 +1,5 @@
-import { YacInvalidOptionsError } from "../errors/YacInvalidOptionsError";
-import { YacClientURLOptions } from "../types";
+import { YacInvalidOptionsError } from "../../errors/YacInvalidOptionsError";
+import { YacClientURLOptions } from "../../YacClient/types";
 
 export function optionsToUrl(options: YacClientURLOptions): URL {
   const { protocol, host, port } = options;

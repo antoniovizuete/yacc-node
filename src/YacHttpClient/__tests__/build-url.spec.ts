@@ -1,5 +1,5 @@
-import { buildUrl } from "../../tools/build-url";
-import { YacClientURLOptions } from "../../types";
+import { YacClientURLOptions } from "../../YacClient/types";
+import { buildUrl } from "../tools/build-url";
 
 describe("buildUrl", () => {
   const options: YacClientURLOptions = {
@@ -24,6 +24,22 @@ describe("buildUrl", () => {
     expect(buildUrl({ queryParams, ...options }).toString()).toEqual(
       "http://localhost:8123/?param_key=value"
     );
+  });
+
+  it("should return url with query params being an array of strings", () => {
+    expect(
+      decodeURIComponent(
+        buildUrl({ queryParams: new Map([["key", ["value1", "value2"]]]), ...options }).toString()
+      )
+    ).toEqual("http://localhost:8123/?param_key=['value1','value2']");
+  });
+
+  it("should return url with query params being an array of numbers", () => {
+    expect(
+      decodeURIComponent(
+        buildUrl({ queryParams: new Map([["key", [1, 2]]]), ...options }).toString()
+      )
+    ).toEqual("http://localhost:8123/?param_key=[1,2]");
   });
 
   it("should return url", () => {

@@ -1,15 +1,15 @@
-import { YacInvalidConnectionStringError } from "../errors/YacInvalidConnectionStringError";
+import { YacInvalidConnectionStringError } from "../../errors/YacInvalidConnectionStringError";
 import { YacClientOptions } from "../types";
 
 const CLICKHOUSE_TOKEN = "clickhouse:";
 
-export function connectionStringToOptions(connectionString: string): YacClientOptions {
-  const isValidConnectionString = () =>
-    connectionString &&
-    typeof connectionString === "string" &&
-    connectionString.startsWith(CLICKHOUSE_TOKEN);
+const isValidConnectionString = (connectionString: string) =>
+  connectionString &&
+  typeof connectionString === "string" &&
+  connectionString.startsWith(CLICKHOUSE_TOKEN);
 
-  if (!isValidConnectionString()) {
+export function connectionStringToOptions(connectionString: string): YacClientOptions {
+  if (!isValidConnectionString(connectionString)) {
     throw new YacInvalidConnectionStringError();
   }
   const normailizedConnectionString = connectionString.replace(
@@ -24,9 +24,9 @@ export function connectionStringToOptions(connectionString: string): YacClientOp
       protocol: url.searchParams.has("secure") ? "https" : "http",
       host: url.hostname,
       port: +url.port,
-      username: url.username,
-      password: url.password,
-      database: url.pathname.replace(/^\//, ""),
+      username: url.username || undefined,
+      password: url.password || undefined,
+      database: url.pathname.replace(/^\//, "") || undefined,
     };
     return options;
   } catch (error) {

@@ -1,6 +1,7 @@
-import { YacInvalidQueryFormat } from "./errors/YacInvalidQueryFormat";
-import { connectionStringToOptions } from "./tools/conection-string-to-options";
-import { YacHttpClient, YacRequesterMethod } from "./tools/YacHttpClient";
+import { YacInvalidQueryFormat } from "../errors/YacInvalidQueryFormat";
+
+import { YacHttpClient, YacHttpClientMethod } from "../YacHttpClient";
+import { buildOptions } from "./tools/build-options";
 import { YacClientOptions, YacClientQueryParams } from "./types";
 
 export class YacClient {
@@ -10,12 +11,12 @@ export class YacClient {
   constructor(connectionString: string);
   constructor(options: YacClientOptions);
   constructor(arg: string | YacClientOptions) {
-    this.options = this.buildOptions(arg);
+    this.options = buildOptions(arg);
     this.httpClient = new YacHttpClient(this.options);
   }
 
   public async query<T>(query: string, params?: YacClientQueryParams): Promise<T[]> {
-    const queryParams = params instanceof Map ? params : new Map(Object.entries(params ?? {}));
+    const queryParams = new Map(Object.entries(params ?? {}));
 
     if (this.options.database) {
       queryParams.set("database", this.options.database);
@@ -28,8 +29,8 @@ export class YacClient {
     const payload = query.trim();
 
     const response = await this.httpClient.request({
-      method: YacRequesterMethod.POST,
-      payload,
+      method: YacHttpClientMethod.POST,
+      query: payload,
       queryParams,
     });
 
@@ -39,13 +40,6 @@ export class YacClient {
   public async ping(): Promise<boolean> {
     const response = await this.httpClient.request({ path: "/ping" });
     return response.payload === "Ok.\n";
-  }
-
-  private buildOptions(arg: string | YacClientOptions): YacClientOptions {
-    if (typeof arg === "string") {
-      return connectionStringToOptions(arg);
-    }
-    return arg;
   }
 
   private validateQuery(query: string): boolean {

@@ -10,7 +10,7 @@ export type YacClientUserOptions = {
   database: string;
 };
 
-export type YacClientOptions = YacClientURLOptions & YacClientUserOptions;
+export type YacClientOptions = YacClientURLOptions & Partial<YacClientUserOptions>;
 
 export type YacClientQueryParams = Record<string, YacQueryParamsAllowedTypes>;
 

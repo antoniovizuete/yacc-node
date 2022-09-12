@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
-    "test": "jest",
+    "test": "jest -c jest.config.ts",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
