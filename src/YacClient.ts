@@ -1,6 +1,7 @@
+import { YacInvalidQueryFormat } from "./errors/YacInvalidQueryFormat";
 import { connectionStringToOptions } from "./tools/conection-string-to-options";
 import { YacHttpClient, YacRequesterMethod } from "./tools/YacHttpClient";
-import { YacClientOptions, YacClientQueryParams, YacQueryParamsAllowedTypes } from "./types";
+import { YacClientOptions, YacClientQueryParams } from "./types";
 
 export class YacClient {
   private readonly options: YacClientOptions;
@@ -13,13 +14,6 @@ export class YacClient {
     this.httpClient = new YacHttpClient(this.options);
   }
 
-  private buildOptions(arg: string | YacClientOptions): YacClientOptions {
-    if (typeof arg === "string") {
-      return connectionStringToOptions(arg);
-    }
-    return arg;
-  }
-
   public async query<T>(query: string, params?: YacClientQueryParams): Promise<T[]> {
     const queryParams = params instanceof Map ? params : new Map(Object.entries(params ?? {}));
 
@@ -27,9 +21,15 @@ export class YacClient {
       queryParams.set("database", this.options.database);
     }
 
+    if (!this.validateQuery(query)) {
+      throw new YacInvalidQueryFormat();
+    }
+
+    const payload = query.trim();
+
     const response = await this.httpClient.request({
       method: YacRequesterMethod.POST,
-      payload: query,
+      payload,
       queryParams,
     });
 
@@ -39,5 +39,18 @@ export class YacClient {
   public async ping(): Promise<boolean> {
     const response = await this.httpClient.request({ path: "/ping" });
     return response.payload === "Ok.\n";
+  }
+
+  private buildOptions(arg: string | YacClientOptions): YacClientOptions {
+    if (typeof arg === "string") {
+      return connectionStringToOptions(arg);
+    }
+    return arg;
+  }
+
+  private validateQuery(query: string): boolean {
+    const regex = /FORMAT\s+([a-zA-Z]+)/g;
+    const [, format] = regex.exec(query) ?? [];
+    return query != null && query.trim().length > 0 && (format === undefined || format === "JSON");
   }
 }
