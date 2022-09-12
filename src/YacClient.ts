@@ -3,8 +3,8 @@ import { YacHttpClient, YacRequesterMethod } from "./tools/YacHttpClient";
 import { YacClientOptions, YacClientQueryParams, YacQueryParamsAllowedTypes } from "./types";
 
 export class YacClient {
-  private options: YacClientOptions;
-  private httpClient: YacHttpClient;
+  private readonly options: YacClientOptions;
+  private readonly httpClient: YacHttpClient;
 
   constructor(connectionString: string);
   constructor(options: YacClientOptions);

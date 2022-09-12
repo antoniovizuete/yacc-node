@@ -23,7 +23,7 @@ type YacResponse = {
 };
 
 export class YacHttpClient {
-  private options: YacClientOptions;
+  private readonly options: YacClientOptions;
   constructor(options: YacClientOptions) {
     this.options = options;
   }
