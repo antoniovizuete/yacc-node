@@ -1,5 +1,5 @@
-import { buildUrl } from "../tools/build-url";
-import { YacClientURLOptions } from "../types";
+import { buildUrl } from "../../tools/build-url";
+import { YacClientURLOptions } from "../../types";
 
 describe("buildUrl", () => {
   const options: YacClientURLOptions = {

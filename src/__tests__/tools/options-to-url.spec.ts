@@ -1,6 +1,6 @@
-import { YacInvalidOptionsError } from "../errors/YacInvalidOptionsError";
-import { YacClientOptions } from "../types";
-import { optionsToUrl } from "../tools/options-to-url";
+import { YacInvalidOptionsError } from "../../errors/YacInvalidOptionsError";
+import { optionsToUrl } from "../../tools/options-to-url";
+import { YacClientOptions } from "../../types";
 
 describe("optionsToUrl", () => {
   it("should throw error if protocol or host or password are not vaild", () => {

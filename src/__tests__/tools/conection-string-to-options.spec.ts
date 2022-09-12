@@ -1,5 +1,5 @@
-import { YacInvalidConnectionStringError } from "../errors/YacInvalidConnectionStringError";
-import { connectionStringToOptions } from "../tools/conection-string-to-options";
+import { YacInvalidConnectionStringError } from "../../errors/YacInvalidConnectionStringError";
+import { connectionStringToOptions } from "../../tools/conection-string-to-options";
 
 describe("connectionStringToOptions", () => {
   it("should throw error if connection string is not valid", () => {
