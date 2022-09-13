@@ -2,11 +2,15 @@
   "name": "yacc-node",
   "version": "1.0.0",
   "description": "Yet Another Clickhouse Client for Node.js",
-  "main": "index.js",
   "author": "Antonio Vizuete",
   "license": "MIT",
+  "main": "build/index.js",
+  "types": "build/types",
+  "files": [
+    "build"
+  ],
   "devDependencies": {
-    "@swc/core": "1.2.248",
+    "@swc/core": "^1.3.0",
     "@swc/helpers": "0.4.11",
     "@types/jest": "29.0.0",
     "@types/node": "16",
@@ -20,7 +24,6 @@
     "typescript": "~4.7.0"
   },
   "scripts": {
-    "start": "ts-node src/index.ts",
     "test": "jest -c jest.config.ts",
     "lint": "gts lint",
     "clean": "gts clean",

@@ -2,10 +2,13 @@
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "build"
+    "outDir": "build",
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./build/types"
   },
-  "include": [
-    "src/**/*.ts",
-    "test/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"],
+  "ts-node": {
+    "swc": true
+  }
 }
