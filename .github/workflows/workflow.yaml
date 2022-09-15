@@ -28,7 +28,7 @@ jobs:
         run: ls -la
 
       - name: Install NPM dependecies
-        run: yarn install --production=true
+        run: yarn install
 
       - name: Run tests
         run: yarn test:unit
