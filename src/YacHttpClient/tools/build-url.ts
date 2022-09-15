@@ -5,9 +5,10 @@ import { optionsToUrl } from "./options-to-url";
 type Params = YacClientURLOptions & {
   path?: string;
   queryParams?: InternalQueryParams;
+  urlSearchParams?: URLSearchParams;
 };
 
-const setURLSearchParams = (url: URL, queryParamsMap?: InternalQueryParams): void => {
+const setQueryParamsAsURLSearchParams = (url: URL, queryParamsMap?: InternalQueryParams): void => {
   if (!queryParamsMap) {
     return;
   }
@@ -30,16 +31,23 @@ const setURLSearchParams = (url: URL, queryParamsMap?: InternalQueryParams): voi
   );
 };
 
-const setPath = (url: URL, path?: string): void => {
-  url.pathname = path ?? "/";
+const addUrlSearchParams = (url: URL, searchParams?: URLSearchParams): void => {
+  if (!searchParams) {
+    return;
+  }
+  searchParams.forEach((value, key) => url.searchParams.set(key, value));
 };
 
 export function buildUrl(params: Params): URL {
-  const { path, queryParams, ...urlOptions } = params;
+  const { path, queryParams, urlSearchParams, ...urlOptions } = params;
   const url = optionsToUrl(urlOptions);
 
-  setPath(url, path);
-  setURLSearchParams(url, queryParams);
+  if (path) {
+    url.pathname = path;
+  }
+
+  setQueryParamsAsURLSearchParams(url, queryParams);
+  addUrlSearchParams(url, urlSearchParams);
 
   return url;
 }

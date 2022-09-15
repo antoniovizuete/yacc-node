@@ -8,8 +8,9 @@ export enum YacHttpClientMethod {
 export type YacHttpClientRequestParams = {
   method?: YacHttpClientMethod;
   path?: string;
-  query?: string;
+  body?: string;
   queryParams?: InternalQueryParams;
+  urlSearchParams?: URLSearchParams;
 };
 
 export type YacHttpClientResponse = {
