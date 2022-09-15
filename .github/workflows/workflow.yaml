@@ -24,9 +24,6 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
 
-      - name: Show ls
-        run: ls -la
-
       - name: Install NPM dependecies
         run: yarn install
 
