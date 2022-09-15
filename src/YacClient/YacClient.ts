@@ -28,26 +28,41 @@ export class YacClient {
     return JSON.parse(response.payload).data;
   }
 
+  public async insert<T>(table: string, data: T[]): Promise<boolean> {
+    const database = `${this.options.database}.` ?? "";
+    const query = `INSERT INTO ${database}${table} FORMAT JSONEachRow`;
+    const body = data.map(d => JSON.stringify(d)).join("\n");
+
+    const resutl = await this.performStatement(body, undefined, new URLSearchParams({ query }));
+
+    return resutl.status === 200;
+  }
+
+  public async ping(): Promise<boolean> {
+    const response = await this.httpClient.request({
+      method: YacHttpClientMethod.GET,
+      path: "/ping",
+    });
+    return response.payload === "Ok.\n";
+  }
+
   private performStatement(
-    query: string,
-    params: YacClientQueryParams = {}
+    body: string,
+    params: YacClientQueryParams = {},
+    urlSearchParams: URLSearchParams = new URLSearchParams()
   ): Promise<YacHttpClientResponse> {
     const queryParams = new Map(Object.entries(params));
 
     if (this.options.database) {
-      queryParams.set("database", this.options.database);
+      urlSearchParams.set("database", this.options.database);
     }
 
     return this.httpClient.request({
       method: YacHttpClientMethod.POST,
-      query: query.trim(),
+      body: body.trim(),
       queryParams,
+      urlSearchParams,
     });
-  }
-
-  public async ping(): Promise<boolean> {
-    const response = await this.httpClient.request({ path: "/ping" });
-    return response.payload === "Ok.\n";
   }
 
   private validateQuery(query: string): void {

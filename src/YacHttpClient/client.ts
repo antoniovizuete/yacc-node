@@ -19,21 +19,21 @@ export class YacHttpClient {
     handler = responseHandler
   ): Promise<R> {
     return new Promise((resolve, reject) => {
-      const { method, path, query, queryParams } = params;
+      const { method, path, body, queryParams, urlSearchParams } = params;
 
       const module = this.options.protocol === "https" ? https : http;
 
       const request = module.request(
-        buildUrl({ ...this.options, path, queryParams }),
+        buildUrl({ ...this.options, path, queryParams, urlSearchParams }),
         {
-          method: method ?? YacHttpClientMethod.GET,
+          method: method ?? YacHttpClientMethod.POST,
           headers: buildHeaders(this.options),
         },
         handler(resolve, reject)
       );
 
-      if (method === YacHttpClientMethod.POST && query) {
-        request.write(query);
+      if (method === YacHttpClientMethod.POST && body) {
+        request.write(body);
       }
 
       request.end();
@@ -56,12 +56,16 @@ function responseHandler(
         headers: response.headers as Record<string, string>,
       };
 
+      console.dir(result, { depth: null });
       if (status >= HTTP_200 && status < HTTP_300) {
         resolve(result);
       } else {
+        console.error(result.payload);
         reject(new YacQuerySyntaxError(result.payload));
       }
     });
-    response.on("error", error => reject(error));
+    response.on("error", error => {
+      reject(error);
+    });
   };
 }
