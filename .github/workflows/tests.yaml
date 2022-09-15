@@ -1,4 +1,4 @@
-name: CI - Unit tests
+name: CI - Tests
 
 on:
   push:
@@ -16,6 +16,9 @@ jobs:
         node-version: [16]
 
     steps:
+      - name: ClickHouse in GitHub Actions
+        uses: EpicStep/clickhouse-github-action@v1.0.0
+
       - name: Install NodeJS ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -27,5 +30,8 @@ jobs:
       - name: Install NPM dependecies
         run: yarn install
 
-      - name: Run tests
+      - name: Run unit tests
         run: yarn test:unit
+
+      - name: Run integration tests
+        run: yarn test:int
