@@ -33,4 +33,24 @@ describe("YacClient", () => {
   it("should throw an error if the query is empty", async () => {
     await expect(() => client.query("Sel * ")).rejects.toThrow(new YacQuerySyntaxError());
   });
+
+  describe("Inserting data", () => {
+    const tableName = "test_table";
+    beforeEach(async () => {
+      await client.execute(`CREATE TABLE IF NOT EXISTS ${tableName} (a UInt8) ENGINE = Memory`);
+    });
+
+    afterEach(async () => {
+      await client.execute(`DROP TABLE IF EXISTS ${tableName}`);
+    });
+
+    it("should insert data", async () => {
+      const data = [{ a: 1 }, { a: 2 }];
+      await client.insert(tableName, data);
+      const result = await client.query<typeof data[0]>(`SELECT * FROM ${tableName}`);
+
+      expect(result).toHaveLength(2);
+      expect(result[0].a).toBe(1);
+    });
+  });
 });
