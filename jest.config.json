@@ -1,0 +1,10 @@
+{
+  "verbose": true,
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "modulePathIgnorePatterns": [
+    "/build/"
+  ],
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$"
+}

@@ -1,6 +1,6 @@
-import { YacInvalidQueryFormat } from "../../errors/YacInvalidQueryFormat";
-import { YacQuerySyntaxError } from "../../errors/YacQuerySyntaxError";
-import { YacClient } from "../YacClient";
+import { YacInvalidQueryFormat } from "../src/errors/YacInvalidQueryFormat";
+import { YacQuerySyntaxError } from "../src/errors/YacQuerySyntaxError";
+import { YacClient } from "../src/YacClient/YacClient";
 
 describe("YacClient", () => {
   const client = new YacClient("clickhouse://localhost:8123/default");

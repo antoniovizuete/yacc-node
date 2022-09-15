@@ -7,7 +7,7 @@
     "declarationMap": true,
     "declarationDir": "./build/types"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "e2e-tests/YacClient.test.ts"],
   "ts-node": {
     "swc": true
   }
