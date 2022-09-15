@@ -16,13 +16,13 @@ jobs:
         node-version: [16]
 
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
-
       - name: Install NodeJS ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Git checkout
+        uses: actions/checkout@v2
 
       - name: Install NPM dependecies
         run: yarn install --production=true
