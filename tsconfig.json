@@ -1,6 +1,11 @@
 {
-  "extends": "./configs/tsconfig.esm.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "."
+    "lib": ["ES2022", "DOM"],
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "../build/esm",
+    "declarationDir": "../build/esm/types"
   }
 }
