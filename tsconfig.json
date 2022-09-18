@@ -1,14 +1,6 @@
 {
-  "extends": "./node_modules/gts/tsconfig-google.json",
+  "extends": "./configs/tsconfig.esm.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "build",
-    "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "./build/types"
-  },
-  "include": ["src/**/*.ts", "e2e-tests/YacClient.test.ts"],
-  "ts-node": {
-    "swc": true
+    "rootDir": "."
   }
 }

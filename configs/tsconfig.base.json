@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "checkJs": true,
+    "allowJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["../src/**/*.ts", "../integration-tests/**/*.test.ts"],
+  "exclude": ["../node_modules", "../dist", "../coverage"],
+  "ts-node": {
+    "swc": true
+  }
+}
