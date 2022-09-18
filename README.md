@@ -26,4 +26,4 @@ const result = await client.query<{ a: number }>("SELECT {myParam:UInt8} AS a", 
 console.log(result); // [{ a: 1 }]
 ```
 
-## | Working on improve the docs.
+> ## Working on improve the docs.
