@@ -1,7 +1,7 @@
 name: Release
 on:
   workflow_run:
-    workflows: ["Security Check", "Unit and Integration Tests"]
+    workflows: ["Security Check"]
     branches: [main]
     types:
       - completed

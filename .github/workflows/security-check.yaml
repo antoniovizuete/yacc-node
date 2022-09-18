@@ -1,11 +1,10 @@
 name: Security Check
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Unit and Integration Tests"]
+    branches: [main]
+    types:
+      - completed
 jobs:
   security:
     runs-on: ubuntu-latest
