@@ -28,10 +28,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install NPM dependecies
-        run: npm ci
+        run: yarn install
 
       - name: Run unit tests
-        run: npm run test:unit
+        run: yarn test:unit
 
       - name: Run integration tests
-        run: npm run test:int
+        run: yarn test:int
