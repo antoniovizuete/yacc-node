@@ -1,5 +1,5 @@
-import * as http from "node:http";
-import * as https from "node:https";
+import * as http from "http";
+import * as https from "https";
 import { YacQuerySyntaxError } from "../errors/YacQuerySyntaxError";
 
 import { YacClientOptions } from "../YacClient/types";
