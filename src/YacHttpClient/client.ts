@@ -42,12 +42,14 @@ export class YacHttpClient {
 }
 
 function responseHandler(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolve: (value: any | PromiseLike<any>) => void,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reject: (reason?: any) => void
 ): ((res: http.IncomingMessage) => void) | undefined {
-  return response => {
+  return (response) => {
     const array: Uint8Array[] = [];
-    response.on("data", chunk => array.push(chunk));
+    response.on("data", (chunk) => array.push(chunk));
     response.on("end", () => {
       const status = response.statusCode ?? HTTP_500;
       const result = {
@@ -64,7 +66,7 @@ function responseHandler(
         reject(new YacQuerySyntaxError(result.payload));
       }
     });
-    response.on("error", error => {
+    response.on("error", (error) => {
       reject(error);
     });
   };

@@ -16,7 +16,7 @@ const setQueryParamsAsURLSearchParams = (url: URL, queryParamsMap?: InternalQuer
     if (Array.isArray(value)) {
       return [
         "[",
-        value.map(item => (typeof item === "string" ? `'${item}'` : item)).join(","),
+        value.map((item) => (typeof item === "string" ? `'${item}'` : item)).join(","),
         "]",
       ].join("");
     }

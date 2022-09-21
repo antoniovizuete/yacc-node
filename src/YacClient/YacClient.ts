@@ -31,7 +31,7 @@ export class YacClient {
   public async insert<T>(table: string, data: T[]): Promise<boolean> {
     const database = `${this.options.database}.` ?? "";
     const query = `INSERT INTO ${database}${table} FORMAT JSONEachRow`;
-    const body = data.map(d => JSON.stringify(d)).join("\n");
+    const body = data.map((d) => JSON.stringify(d)).join("\n");
 
     const resutl = await this.performStatement(body, undefined, new URLSearchParams({ query }));
 
@@ -68,7 +68,7 @@ export class YacClient {
   private validateQuery(query: string): void {
     const [, format] = /FORMAT\s+([a-zA-Z]+)/g.exec(query) ?? [];
     const isValid = () =>
-      query != null && query.trim().length > 0 && (format === undefined || format === "JSON");
+      query && query.trim().length > 0 && (format === undefined || format === "JSON");
 
     if (!isValid()) {
       throw new YacInvalidQueryFormat();

@@ -26,7 +26,7 @@ describe("YacClient", () => {
 
   it("should throw an error if the format statement is present and is different of JSON ", async () => {
     await expect(() =>
-      client.query<{ a: number }>(`SELECT * FROM generateRandom('a UInt8') LIMIT 1 FORMAT TSV`)
+      client.query<{ a: number }>("SELECT * FROM generateRandom('a UInt8') LIMIT 1 FORMAT TSV")
     ).rejects.toThrow(new YacInvalidQueryFormat());
   });
 
