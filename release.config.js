@@ -1,3 +1,4 @@
+const releaseRules = require("./configs/release.rules");
 const preset = "atom";
 
 module.exports = {
@@ -13,21 +14,7 @@ module.exports = {
       "@semantic-release/commit-analyzer",
       {
         preset,
-        releaseRules: [
-          { emoji: ":tada:", release: "major" },
-          { emoji: ":boom:", release: "major" },
-          { emoji: ":sparkles:", release: "minor" },
-          { emoji: ":bug:", release: "patch" },
-          { emoji: ":ambulance:", release: "patch" },
-          { emoji: ":art:", release: "patch" },
-          { emoji: ":recycle:", release: "patch" },
-          { emoji: ":fire:", release: "patch" },
-          { emoji: ":construction_worker:", release: "patch" },
-          { emoji: ":rocket:", release: "patch" },
-          { emoji: ":arrow_up:", release: "patch" },
-          { emoji: ":wheel_of_dharma:", release: "patch" },
-          { emoji: ":zap:", release: "patch" },
-        ],
+        releaseRules,
       },
     ],
     ["@semantic-release/npm", { npmPublish: true }],
