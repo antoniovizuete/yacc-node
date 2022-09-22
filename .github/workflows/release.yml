@@ -22,14 +22,10 @@ jobs:
         with:
           node-version: "lts/*"
       - name: Install dependencies
-        run: yarn install 
-      - name: Test echo
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: echo $GITHUB_TOKEN
+        run: yarn install
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release --debug
+          GIT_CREDENTIALS: ${{ secrets.GIT_CREDENTIALS }}
+        run: npx semantic-release
