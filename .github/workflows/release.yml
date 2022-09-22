@@ -23,8 +23,10 @@ jobs:
           node-version: "lts/*"
       - name: Install dependencies
         run: yarn install 
-      - env:
+      - name: Test echo
+        env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: echo $GITHUB_TOKEN
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
