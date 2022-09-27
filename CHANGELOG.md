@@ -1,3 +1,18 @@
+## [1.0.1](https://github.com/antoniovizuete/yacc-node/compare/v1.0.0...v1.0.1) (2022-09-27)
+
+
+### :construction_worker:
+
+* No execute husky on CI ([c187d02](https://github.com/antoniovizuete/yacc-node/commit/c187d0210bc6cb5868d816392263a6129116cf45))
+
+### :recycle:
+
+* Split handling of HTTP response into JSON and string. ([92618e0](https://github.com/antoniovizuete/yacc-node/commit/92618e09a904e6bfcf8961fb1e3e21715bdc175e))
+
+### :rocket:
+
+* Add .env to .gitignore ([d923946](https://github.com/antoniovizuete/yacc-node/commit/d92394616891bc4b938c97de3a8eb2fb6c0f90eb))
+
 # 1.0.0 (2022-09-23)
 
 
