@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx branch-naming-check '^(?!main)(?:\w|-)+$'
+if [ -z \"$CI\" ]; then
+  npx branch-naming-check '^(?!main)(?:\w|-)+$'
+fi
