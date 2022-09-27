@@ -26,4 +26,17 @@ const result = await client.query<{ a: number }>("SELECT {myParam:UInt8} AS a", 
 console.log(result); // [{ a: 1 }]
 ```
 
+```typescript
+const client = new YacClient({
+  host: "localhost",
+  port: 8123,
+  protocol: "http",
+  database: "default",
+});
+
+const resutl = await client.query<{ number: number }>("SELECT * FROM numbers(10)");
+
+console.log(result.length); // 10
+```
+
 > ## Working on improve the docs.
