@@ -1,9 +1,8 @@
 import * as http from "http";
 import * as https from "https";
-import { YacQuerySyntaxError } from "../errors/YacQuerySyntaxError";
 
 import { YacClientOptions } from "../YacClient/types";
-import { HTTP_200, HTTP_300, HTTP_500 } from "./constants";
+import { ResponseHandler } from "./response-handlers/types";
 import { buildHeaders } from "./tools/build-headers";
 import { buildUrl } from "./tools/build-url";
 import { YacHttpClientMethod, YacHttpClientRequestParams, YacHttpClientResponse } from "./types";
@@ -14,10 +13,10 @@ export class YacHttpClient {
     this.options = options;
   }
 
-  public request<R = YacHttpClientResponse>(
+  public request<R>(
     params: YacHttpClientRequestParams,
-    handler = responseHandler
-  ): Promise<R> {
+    repsonseHandler: ResponseHandler<R>
+  ): Promise<YacHttpClientResponse<R>> {
     return new Promise((resolve, reject) => {
       const { method, path, body, queryParams, urlSearchParams } = params;
 
@@ -29,7 +28,7 @@ export class YacHttpClient {
           method: method ?? YacHttpClientMethod.POST,
           headers: buildHeaders(this.options),
         },
-        handler(resolve, reject)
+        repsonseHandler(resolve, reject)
       );
 
       if (method === YacHttpClientMethod.POST && body) {
@@ -39,35 +38,4 @@ export class YacHttpClient {
       request.end();
     });
   }
-}
-
-function responseHandler(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resolve: (value: any | PromiseLike<any>) => void,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  reject: (reason?: any) => void
-): ((res: http.IncomingMessage) => void) | undefined {
-  return (response) => {
-    const array: Uint8Array[] = [];
-    response.on("data", (chunk) => array.push(chunk));
-    response.on("end", () => {
-      const status = response.statusCode ?? HTTP_500;
-      const result = {
-        status,
-        payload: Buffer.concat(array).toString(),
-        headers: response.headers as Record<string, string>,
-      };
-
-      console.dir(result, { depth: null });
-      if (status >= HTTP_200 && status < HTTP_300) {
-        resolve(result);
-      } else {
-        console.error(result.payload);
-        reject(new YacQuerySyntaxError(result.payload));
-      }
-    });
-    response.on("error", (error) => {
-      reject(error);
-    });
-  };
 }

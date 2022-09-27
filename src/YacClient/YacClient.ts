@@ -1,5 +1,10 @@
 import { YacInvalidQueryFormat } from "../errors/YacInvalidQueryFormat";
 import { YacHttpClient, YacHttpClientMethod } from "../YacHttpClient";
+import {
+  JsonResponse,
+  jsonResponseHandler,
+  stringResponseHandler,
+} from "../YacHttpClient/response-handlers";
 import { YacHttpClientResponse } from "../YacHttpClient/types";
 import { buildOptions } from "./tools/build-options";
 import { YacClientOptions, YacClientQueryParams } from "./types";
@@ -21,11 +26,14 @@ export class YacClient {
     return response.status === 200;
   }
 
-  public async query<T>(query: string, params?: YacClientQueryParams): Promise<T[]> {
+  public async query<T extends Record<string, unknown>>(
+    query: string,
+    params?: YacClientQueryParams
+  ): Promise<T[]> {
     this.validateQuery(query);
-    const response = await this.performStatement(query, params);
+    const response = await this.performStatementToJson<T>(query, params);
 
-    return JSON.parse(response.payload).data;
+    return response.payload.data;
   }
 
   public async insert<T>(table: string, data: T[]): Promise<boolean> {
@@ -39,10 +47,13 @@ export class YacClient {
   }
 
   public async ping(): Promise<boolean> {
-    const response = await this.httpClient.request({
-      method: YacHttpClientMethod.GET,
-      path: "/ping",
-    });
+    const response = await this.httpClient.request(
+      {
+        method: YacHttpClientMethod.GET,
+        path: "/ping",
+      },
+      stringResponseHandler
+    );
     return response.payload === "Ok.\n";
   }
 
@@ -50,19 +61,44 @@ export class YacClient {
     body: string,
     params: YacClientQueryParams = {},
     urlSearchParams: URLSearchParams = new URLSearchParams()
-  ): Promise<YacHttpClientResponse> {
+  ): Promise<YacHttpClientResponse<string>> {
     const queryParams = new Map(Object.entries(params));
 
     if (this.options.database) {
       urlSearchParams.set("database", this.options.database);
     }
 
-    return this.httpClient.request({
-      method: YacHttpClientMethod.POST,
-      body: body.trim(),
-      queryParams,
-      urlSearchParams,
-    });
+    return this.httpClient.request(
+      {
+        method: YacHttpClientMethod.POST,
+        body: body.trim(),
+        queryParams,
+        urlSearchParams,
+      },
+      stringResponseHandler
+    );
+  }
+
+  private performStatementToJson<P extends Record<string, unknown>>(
+    body: string,
+    params: YacClientQueryParams = {},
+    urlSearchParams: URLSearchParams = new URLSearchParams()
+  ): Promise<YacHttpClientResponse<JsonResponse<P>>> {
+    const queryParams = new Map(Object.entries(params));
+
+    if (this.options.database) {
+      urlSearchParams.set("database", this.options.database);
+    }
+
+    return this.httpClient.request(
+      {
+        method: YacHttpClientMethod.POST,
+        body: body.trim(),
+        queryParams,
+        urlSearchParams,
+      },
+      jsonResponseHandler<P>()
+    );
   }
 
   private validateQuery(query: string): void {
