@@ -13,8 +13,8 @@ export type YacHttpClientRequestParams = {
   urlSearchParams?: URLSearchParams;
 };
 
-export type YacHttpClientResponse = {
-  payload: string;
+export type YacHttpClientResponse<T> = {
+  payload: T;
   status: number;
   headers: Record<string, string>;
 };

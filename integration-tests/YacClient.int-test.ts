@@ -53,4 +53,18 @@ describe("YacClient", () => {
       expect(result[0].a).toBe(1);
     });
   });
+
+  describe("Executing queries", () => {
+    it("should execute a query", async () => {
+      const [result] = await client.query<{ number: number }>("SELECT 1 as number");
+      expect(result.number).toBe(1);
+    });
+
+    it("should return a number even being a big integer", async () => {
+      const [result] = await client.query<{ count: number }>(
+        "SELECT COUNT(*) AS count FROM (SELECT * FROM numbers(500))"
+      );
+      expect(result.count).toBe(500);
+    });
+  });
 });
