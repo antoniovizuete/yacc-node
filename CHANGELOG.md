@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/antoniovizuete/yacc-node/compare/v1.0.1...v1.0.2) (2022-09-27)
+
+
+### :rocket:
+
+* Forcing version ([0b99603](https://github.com/antoniovizuete/yacc-node/commit/0b9960347460c031ab92c9cbab2833ac52026a52))
+
 ## [1.0.1](https://github.com/antoniovizuete/yacc-node/compare/v1.0.0...v1.0.1) (2022-09-27)
 
 

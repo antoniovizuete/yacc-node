@@ -1,6 +1,6 @@
 {
   "name": "yacc-node",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Yet Another Clickhouse Client for Node.js",
   "author": "Antonio Vizuete",
   "license": "MIT",
